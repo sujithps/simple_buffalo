@@ -13,7 +13,6 @@ import (
 	"github.com/rs/cors"
 	"github.com/simple_buffalo/models"
 
-	"github.com/markbates/goth/gothic"
 	"github.com/sirupsen/logrus"
 )
 

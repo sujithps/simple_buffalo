@@ -59,11 +59,34 @@ CREATE TABLE users (
 ALTER TABLE users OWNER TO sujiths;
 
 --
+-- Name: whitelisted_clients; Type: TABLE; Schema: public; Owner: sujiths
+--
+
+CREATE TABLE whitelisted_clients (
+    id uuid NOT NULL,
+    client_id character varying(255) NOT NULL,
+    pass_key character varying(255) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE whitelisted_clients OWNER TO sujiths;
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: sujiths
 --
 
 ALTER TABLE ONLY users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: whitelisted_clients whitelisted_clients_pkey; Type: CONSTRAINT; Schema: public; Owner: sujiths
+--
+
+ALTER TABLE ONLY whitelisted_clients
+    ADD CONSTRAINT whitelisted_clients_pkey PRIMARY KEY (id);
 
 
 --

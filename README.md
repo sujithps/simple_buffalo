@@ -20,6 +20,10 @@ Ok, so you've edited the "database.yml" file and started postgres, now Buffalo c
 
     $ buffalo pop migrate
 
+### Run Seed migrations
+
+    $ buffalo task db:seed:wc
+
 ### Get the routes
 
     $ buffalo routes

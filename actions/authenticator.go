@@ -5,6 +5,7 @@ import (
 	"fmt"
 
 	"github.com/patrickmn/go-cache"
+	"github.com/simple_buffalo/models"
 )
 
 type ClientAuthentication struct {
@@ -24,13 +25,13 @@ func (ca *ClientAuthentication) Authenticate(clientID, passKey string) error {
 
 	cachedPassKey, found := ca.cache.Get(clientID)
 	if !found {
-		authorizedApplication, err := ca.getData(clientID)
+		whitelistedClient, err := ca.getDBData(clientID)
 		if err != nil {
 			return fmt.Errorf("failed to query the database: %s", err)
 		}
 
-		ca.cache.Set(authorizedApplication.ClientID, authorizedApplication.PassKey, cache.NoExpiration)
-		cachedPassKey = authorizedApplication.PassKey
+		ca.cache.Set(whitelistedClient.ClientID, whitelistedClient.PassKey, cache.NoExpiration)
+		cachedPassKey = whitelistedClient.PassKey
 	}
 
 	if cachedPassKey != passKey {
@@ -40,14 +41,15 @@ func (ca *ClientAuthentication) Authenticate(clientID, passKey string) error {
 	return nil
 }
 
-func (ca *ClientAuthentication) getData(_ string) (AuthData, error) {
-	return AuthData{
-		ClientID: "A",
-		PassKey:  "B",
-	}, nil
-}
+func (ca *ClientAuthentication) getDBData(clientID string) (models.WhitelistedClient, error) {
 
-type AuthData struct {
-	ClientID string
-	PassKey  string
+	whitelistedClients := []models.WhitelistedClient{}
+	query := models.DB.Where("client_id = ?", clientID)
+	err := query.All(&whitelistedClients)
+
+	if len(whitelistedClients) == 0 {
+		return models.WhitelistedClient{}, errors.New("could not a matching clientId")
+	}
+
+	return whitelistedClients[0], err
 }

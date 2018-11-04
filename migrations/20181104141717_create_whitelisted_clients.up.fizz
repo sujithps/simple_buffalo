@@ -1,0 +1,5 @@
+create_table("whitelisted_clients") {
+	t.Column("id", "uuid", {"primary": true})
+	t.Column("client_id", "string", {})
+	t.Column("pass_key", "string", {})
+}
