@@ -20,6 +20,12 @@ import (
 // ENV is used to help switch settings based on where the
 // application is being run. Default is "development".
 var ENV = envy.Get("GO_ENV", "development")
+
+const (
+	HEADER_KEY_CLIENT_ID = "ClientID"
+	HEADER_KEY_PASS_KEY  = "PassKey"
+)
+
 var app *buffalo.App
 
 // App is where all routes and middleware for buffalo
@@ -63,10 +69,6 @@ func App() *buffalo.App {
 		app.Use(popmw.Transaction(models.DB))
 
 		app.GET("/", HomeHandler)
-
-		auth := app.Group("/auth")
-		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
-		auth.GET("/{provider}/callback", AuthCallback)
 	}
 
 	return app
@@ -74,8 +76,9 @@ func App() *buffalo.App {
 
 func AuthMiddleware(next buffalo.Handler) buffalo.Handler {
 	return func(c buffalo.Context) error {
-		clientID := c.Request().Header.Get("ClientID")
-		passKey := c.Request().Header.Get("PassKey")
+		clientID := c.Request().Header.Get(HEADER_KEY_CLIENT_ID)
+		passKey := c.Request().Header.Get(HEADER_KEY_PASS_KEY)
+
 		err := NewClientAuthentication().Authenticate(clientID, passKey)
 		if err != nil {
 			logrus.Error("Authentication failed!!!")
