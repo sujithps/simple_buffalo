@@ -1,13 +1,18 @@
+default: &default
+   dialect: postgres
+   database: simple_buffalo_development
+   user: sujiths
+   password: ''
+   host: 127.0.0.1
+   pool: 5
+
 development:
-  dialect: postgres
-  database: simple_buffalo_development
-  user: sujiths
-  password: ''
-  host: 127.0.0.1
-  pool: 5
+  <<: *default
 
 test:
-  url: {{envOr "TEST_DATABASE_URL" "postgres://postgres:postgres@127.0.0.1:5432/simple_buffalo_test?sslmode=disable"}}
+  <<: *default
+  database: simple_buffalo_test
 
 production:
-  url: {{envOr "DATABASE_URL" "postgres://postgres:postgres@127.0.0.1:5432/simple_buffalo_production?sslmode=disable"}}
+   <<: *default
+   database: simple_buffalo_production
