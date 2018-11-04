@@ -3,7 +3,11 @@ package main
 import (
 	"log"
 
+	"os"
+
+	"github.com/gobuffalo/envy"
 	"github.com/simple_buffalo/actions"
+	"github.com/sirupsen/logrus"
 )
 
 // main is the starting point for your Buffalo application.
@@ -12,11 +16,27 @@ import (
 // All we ask is that, at some point, you make sure to
 // call `app.Serve()`, unless you don't want to start your
 // application that is. :)
+
 func main() {
+	configureLog()
+
 	app := actions.App()
 	if err := app.Serve(); err != nil {
 		log.Fatal(err)
 	}
+}
+
+func configureLog() {
+	var LOG_LEVEL = envy.Get("LOG_LEVEL", "info")
+
+	level, err := logrus.ParseLevel(LOG_LEVEL)
+	if err != nil {
+		panic(err.Error())
+	}
+
+	logrus.SetFormatter(&logrus.JSONFormatter{})
+	logrus.SetOutput(os.Stdout)
+	logrus.SetLevel(level)
 }
 
 /*
