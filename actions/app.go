@@ -3,15 +3,17 @@ package actions
 import (
 	"github.com/gobuffalo/buffalo"
 	"github.com/gobuffalo/envy"
-	forcessl "github.com/gobuffalo/mw-forcessl"
-	paramlogger "github.com/gobuffalo/mw-paramlogger"
+	"github.com/gobuffalo/mw-forcessl"
+	"github.com/gobuffalo/mw-paramlogger"
 	"github.com/unrolled/secure"
 
 	"github.com/gobuffalo/buffalo-pop/pop/popmw"
-	contenttype "github.com/gobuffalo/mw-contenttype"
+	"github.com/gobuffalo/mw-contenttype"
 	"github.com/gobuffalo/x/sessions"
 	"github.com/rs/cors"
 	"github.com/simple_buffalo/models"
+
+	"github.com/markbates/goth/gothic"
 )
 
 // ENV is used to help switch settings based on where the
@@ -59,6 +61,9 @@ func App() *buffalo.App {
 
 		app.GET("/", HomeHandler)
 
+		auth := app.Group("/auth")
+		auth.GET("/{provider}", buffalo.WrapHandlerFunc(gothic.BeginAuthHandler))
+		auth.GET("/{provider}/callback", AuthCallback)
 	}
 
 	return app
