@@ -362,6 +362,14 @@
   version = "v3.1.2"
 
 [[projects]]
+  digest = "1:97df918963298c287643883209a2c3f642e6593379f97ab400c2a2e219ab647d"
+  name = "github.com/golang/protobuf"
+  packages = ["proto"]
+  pruneopts = "UT"
+  revision = "aa810b61a9c79d51363740d207bb46cf8e620ed5"
+  version = "v1.2.0"
+
+[[projects]]
   digest = "1:c79fb010be38a59d657c48c6ba1d003a8aa651fa56b579d959d74573b7dff8e1"
   name = "github.com/gorilla/context"
   packages = ["."]
@@ -482,6 +490,18 @@
   version = "v1.0.2"
 
 [[projects]]
+  digest = "1:71d9423c6710c85db5b2ddf36b2dc12c0ef9a03b396b1466f05401a9e924565e"
+  name = "github.com/markbates/goth"
+  packages = [
+    ".",
+    "gothic",
+    "providers/github",
+  ]
+  pruneopts = "UT"
+  revision = "bc6d8ddf751a745f37ca5567dbbfc4157bbf5da9"
+  version = "v1.47.2"
+
+[[projects]]
   digest = "1:fecb0ae22407090e8cceb1b108d1f44576420f8450213c0f18416745d80504eb"
   name = "github.com/markbates/grift"
   packages = ["grift"]
@@ -595,6 +615,14 @@
   pruneopts = "UT"
   revision = "0a5cdaa81e2ed9650363bfd688c752557e6a9460"
   version = "v3.1"
+
+[[projects]]
+  digest = "1:808cdddf087fb64baeae67b8dfaee2069034d9704923a3cb8bd96a995421a625"
+  name = "github.com/patrickmn/go-cache"
+  packages = ["."]
+  pruneopts = "UT"
+  revision = "a3647f8e31d79543b2d0f0ae2fe5c379d72cedc0"
+  version = "v2.1.0"
 
 [[projects]]
   digest = "1:40e195917a951a8bf867cd05de2a46aaf1806c50cf92eebf4c16f78cd196f747"
@@ -739,15 +767,27 @@
 
 [[projects]]
   branch = "master"
-  digest = "1:17847c677cb69303e0b8606b690f400c53485620a98d288aee1a215235118fcb"
+  digest = "1:db7528233e2f178f8770284f05c60708b31e73d9b8d287676ce52a3389681fe4"
   name = "golang.org/x/net"
   packages = [
     "context",
+    "context/ctxhttp",
     "html",
     "html/atom",
   ]
   pruneopts = "UT"
   revision = "c10e9556a7bc0e7c942242b606f0acf024ad5d6a"
+
+[[projects]]
+  branch = "master"
+  digest = "1:a7b20b632c01d31a065ddfd4c4faaea60ed08861c961a71db219c19e2ba18908"
+  name = "golang.org/x/oauth2"
+  packages = [
+    ".",
+    "internal",
+  ]
+  pruneopts = "UT"
+  revision = "232e45548389bd9357411a6922a07c5fd4068bda"
 
 [[projects]]
   branch = "master"
@@ -769,9 +809,18 @@
   revision = "9b800f95dbbc54abff0acf7ee32d88ba4e328c89"
 
 [[projects]]
-  digest = "1:c25289f43ac4a68d88b02245742347c94f1e108c534dda442188015ff80669b3"
+  digest = "1:a623ed4965cad144a32551cb009b9bad9ad247c22ca1afdd934fc85d0c891f93"
   name = "google.golang.org/appengine"
-  packages = ["cloudsql"]
+  packages = [
+    "cloudsql",
+    "internal",
+    "internal/base",
+    "internal/datastore",
+    "internal/log",
+    "internal/remote_api",
+    "internal/urlfetch",
+    "urlfetch",
+  ]
   pruneopts = "UT"
   revision = "4a4468ece617fc8205e99368fa2200e9d1fad421"
   version = "v1.3.0"
@@ -799,8 +848,13 @@
     "github.com/gobuffalo/pop",
     "github.com/gobuffalo/suite",
     "github.com/gobuffalo/x/sessions",
+    "github.com/markbates/goth",
+    "github.com/markbates/goth/gothic",
+    "github.com/markbates/goth/providers/github",
     "github.com/markbates/grift/grift",
+    "github.com/patrickmn/go-cache",
     "github.com/rs/cors",
+    "github.com/sirupsen/logrus",
     "github.com/unrolled/secure",
   ]
   solver-name = "gps-cdcl"

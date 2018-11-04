@@ -3,6 +3,9 @@
 	name = "github.com/gobuffalo/buffalo"
 	version = "v0.13.4"
 
+[[constraint]]
+	name = "github.com/patrickmn/go-cache"
+
 
 [prune]
 	go-tests = true

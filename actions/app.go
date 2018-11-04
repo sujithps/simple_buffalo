@@ -14,6 +14,7 @@ import (
 	"github.com/simple_buffalo/models"
 
 	"github.com/markbates/goth/gothic"
+	"github.com/sirupsen/logrus"
 )
 
 // ENV is used to help switch settings based on where the
@@ -54,6 +55,8 @@ func App() *buffalo.App {
 		// Set the request content type to JSON
 		app.Use(contenttype.Set("application/json"))
 
+		app.Use(AuthMiddleware)
+
 		// Wraps each request in a transaction.
 		//  c.Value("tx").(*pop.Connection)
 		// Remove to disable this.
@@ -67,6 +70,22 @@ func App() *buffalo.App {
 	}
 
 	return app
+}
+
+func AuthMiddleware(next buffalo.Handler) buffalo.Handler {
+	return func(c buffalo.Context) error {
+		clientID := c.Request().Header.Get("ClientID")
+		passKey := c.Request().Header.Get("PassKey")
+		err := NewClientAuthentication().Authenticate(clientID, passKey)
+		if err != nil {
+			logrus.Error("Authentication failed!!!")
+			return c.Error(401, err)
+		}
+
+		err = next(c)
+		// do some work after calling the next handler
+		return err
+	}
 }
 
 // forceSSL will return a middleware that will redirect an incoming request
