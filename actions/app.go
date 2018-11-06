@@ -14,6 +14,12 @@ import (
 	"github.com/simple_buffalo/models"
 
 	"github.com/sirupsen/logrus"
+	"net"
+	"google.golang.org/grpc/reflection"
+	"google.golang.org/grpc"
+	"fmt"
+	"golang.org/x/net/context"
+	pb "github.com/simple_buffalo/proto"
 )
 
 // ENV is used to help switch settings based on where the
@@ -68,9 +74,35 @@ func App() *buffalo.App {
 		app.Use(popmw.Transaction(models.DB))
 
 		app.GET("/", HomeHandler)
+
+		go func() {
+			fmt.Println("Starting teh gRPC server")
+			startGRPCServer()
+		}()
 	}
 
 	return app
+}
+
+func startGRPCServer() {
+	lis, err := net.Listen("tcp", ":50051")
+	if err != nil {
+		logrus.Fatalf("failed to listen: %v", err)
+	}
+	s := grpc.NewServer()
+	pb.RegisterGreeterServer(s, &server{})
+	// Register reflection service on gRPC server.
+	reflection.Register(s)
+	if err := s.Serve(lis); err != nil {
+		logrus.Fatalf("failed to serve: %v", err)
+	}
+}
+
+type server struct{}
+
+func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloReply, error) {
+	fmt.Println("Recieved a request in gRPC")
+	return &pb.HelloReply{Message: "Hello " + in.Name}, nil
 }
 
 func AuthMiddleware(next buffalo.Handler) buffalo.Handler {

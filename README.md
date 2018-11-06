@@ -39,6 +39,15 @@ Buffalo ships with a command that will watch your application and automatically 
 
     $  curl localhost:3000 -H 'ClientID: user001' -H 'PassKey: pass001'
 
+### gRPC Server
+
+   This application is running a simple gRPC server in port 50051.
+
+### Run gRPC client to test the gRPC server
+
+    $ cd cd grpc-client
+    $ go run run-client.go
+
 If you point your browser to [http://127.0.0.1:3000](http://127.0.0.1:3000) you should see a "Welcome to Buffalo!" page.
 
 **Congratulations!** You now have your Buffalo application up and running.
